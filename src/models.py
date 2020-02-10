@@ -2,16 +2,47 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-# class Person(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(80), unique=True, nullable=False)
-#     email = db.Column(db.String(120), unique=True, nullable=False)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    telefono = db.Column(db.String(15), unique=True, nullable=False)
 
-#     def __repr__(self):
-#         return '<Person %r>' % self.username
+    def __init__(self, name,email,telefono):
+        self.name = name
+        self.email = email 
+        self.telefono = telefono 
 
-#     def serialize(self):
-#         return {
-#             "username": self.username,
-#             "email": self.email
-#         }
+    def __repr__(self):
+        return f'<User name: {self.name} email: {self.email} telefono: {self.telefono}>'
+
+    def serialize(self):
+        return {
+            "name": self.name,
+            "email": self.email,
+            "telefono": self.telefono
+        }
+
+class Presupuesto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    servicios = db.Column(db.String(120), nullable = False)
+    personas = db.Column(db.Integer, nullable = False ) 
+    fecha = db.column(db.Date, nullable = False)
+
+    def __init__(self, servicios, personas, fecha)
+        self.servicios = servicios
+        self.personas = personas
+        self.fecha = fecha 
+
+    def __repr__(self):
+        return f'<Presupuesto servicios: {self.servicios} personas: {self.personas} fecha: {self.fecha}>'
+
+
+    def serialize(self):
+        return {
+            "servicios": self.servicios,
+            "personas": self.personas,
+            "fecha": self.fecha
+        }
+
+    
