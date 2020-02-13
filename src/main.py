@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
-from models import db, User
+from models import db, User, Presupuesto
 #from models import Person
 
 app = Flask(__name__)
@@ -37,19 +37,33 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
 @app.route('/register', methods=['POST'])
 def register_user():
-
-    user_data=request.json
-    new_user=User(user_data["name"], user_data["email"], user_data["telefono"])
+    user_data = request.json
+    new_user = User(user_data["name"],user_data["direccion"],user_data["telefono"])
     db.session.add(new_user)
-    db.session.commit()
+    try:
+        db.session.commit()
+        return jsonify({"result": "user registered"}), 201
+    except:
+        db.session.rollback()
+        return jsonify({"result": "user already exists or input is not valid"}), 400
 
-
-    return jsonify({"result": "user registered"}), 201
-
+@app.route('/presupuesto', methods=['POST'])
+def presupuesto_user():
+    presupuesto_data = request.json
+    new_presupuesto = Presupuesto(presupuesto_data["servicios"], presupuesto_data["email"],presupuesto_data["personas"],presupuesto_data["direccion"],presupuesto_data["fecha"])
+    db.session.add(new_presupuesto)
+    try:
+        db.session.commit()
+        return jsonify({"Su presupuesto se competo con éxito"}), 200
+    except:
+        db.session.rollback()
+        return jsonify({"Debe completar su registro"}), 400
+    
 
 # this only runs if `$ python src/main.py` is executed
-if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 3000))
-    app.run(host='0.0.0.0', port=PORT, debug=False)
+    if __name__ == '__main__':
+        PORT = int(os.environ.get('PORT', 3000))
+        app.run(host='0.0.0.0', port=PORT, debug=False)
