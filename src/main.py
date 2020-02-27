@@ -41,7 +41,7 @@ def handle_hello():
 @app.route('/register', methods=['POST'])
 def register_user():
     user_data = request.json
-    new_user = User(user_data["name"],user_data["direccion"],user_data["telefono"])
+    new_user = User(user_data["email"],user_data["name"])
     db.session.add(new_user)
     try:
         db.session.commit()
@@ -53,11 +53,11 @@ def register_user():
 @app.route('/presupuesto', methods=['POST'])
 def presupuesto_user():
     presupuesto_data = request.json
-    new_presupuesto = Presupuesto(presupuesto_data["servicios"], presupuesto_data["email"],presupuesto_data["personas"],presupuesto_data["direccion"],presupuesto_data["fecha"])
+    new_presupuesto = Presupuesto(presupuesto_data["evento"], presupuesto_data["email"],presupuesto_data["personas"],presupuesto_data["direccion"],presupuesto_data["fecha"],presupuesto_data["hora"],presupuesto_data["telefono"])
     db.session.add(new_presupuesto)
     try:
         db.session.commit()
-        return jsonify({"Su presupuesto se competo con éxito"}), 200
+        return jsonify({"Su presupuesto se completo con éxito"}), 200
     except:
         db.session.rollback()
         return jsonify({"Debe completar su registro"}), 400
