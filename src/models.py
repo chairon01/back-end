@@ -30,7 +30,7 @@ class Presupuesto(db.Model):
     email = db.Column(db.String(120), nullable=False)
     personas = db.Column(db.Integer, nullable = False )
     direccion = db.Column(db.String(250), nullable = False)
-    fecha = db.Column(db.Date, unique=True, nullable = False)
+    fecha = db.Column(db.Date, nullable = False)
     hora = db.Column(db.Time, nullable=False)
     telefono = db.Column(db.String(50), nullable = False)    
 

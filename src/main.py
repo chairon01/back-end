@@ -54,13 +54,10 @@ def register_user():
 def presupuesto_user():
     presupuesto_data = request.json
     print(presupuesto_data)
-    if "personas" in presupuesto_data:
-        print("got here")
-        new_presupuesto = Presupuesto(presupuesto_data["evento"], presupuesto_data["email"],presupuesto_data["personas"],presupuesto_data["direccion"],presupuesto_data["fecha"],presupuesto_data["hora"],presupuesto_data["telefono"])
-    else:
-        new_presupuesto = Presupuesto(presupuesto_data["evento"], presupuesto_data["email"],presupuesto_data["direccion"],presupuesto_data["fecha"],presupuesto_data["hora"],presupuesto_data["telefono"])
+    new_presupuesto = Presupuesto(presupuesto_data["evento"], presupuesto_data["email"],presupuesto_data["personas"],presupuesto_data["direccion"],presupuesto_data["fecha"],presupuesto_data["hora"],presupuesto_data["telefono"])
     db.session.add(new_presupuesto)
-    if presupuesto_data["suscribir"] == True:
+    if presupuesto_data["suscribir"]:
+        print("pidio registro")
         if User.query.filter_by(email=presupuesto_data["email"]).one_or_none():
             new_user = User(presupuesto_data["email"], presupuesto_data["name"])
             db.session.add(new_user)
